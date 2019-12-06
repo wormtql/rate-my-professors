@@ -1,4 +1,4 @@
-# rate_my_professors
+# jxl
 
 ## Project setup
 ```
