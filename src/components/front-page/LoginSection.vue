@@ -103,7 +103,7 @@
                 this.showIdle = true;
 
                 let vm = this;
-                this.axios.post(`http://${this.global.domain}/sessions`, data).then(function (response) {
+                this.axios.post(`http://${this.global.domain}/${this.global.prefix}sessions`, data).then(function (response) {
                     window.console.log(response);
 
                     // vm.axios.get(`http://${vm.global.domain}/users`).then(window.console.log);

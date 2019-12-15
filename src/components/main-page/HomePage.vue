@@ -59,7 +59,7 @@
         },
         created: function () {
             window.console.log("aaa");
-            this.axios.get(`http://${this.global.domain}/users`).then((res) => {
+            this.axios.get(`http://${this.global.domain}/${this.global.prefix}users`).then((res) => {
                 if (res.data.code === 0) {
                     this.loaded = true;
 

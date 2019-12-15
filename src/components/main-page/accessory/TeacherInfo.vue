@@ -40,9 +40,12 @@
 
         // tags
         div(style="padding-bottom: 24px; border-bottom: 1px solid #00000022; margin-bottom: 24px;")
-            div(v-for="(item, index) in pTags", :key="index", style=tagStyle)
-                span {{ item.tName }}
-                span(style=tagSpan2Style) {{ item.tNumber }}
+            div(v-if="pTags.length === 0")
+                p 这个老师还没有标签
+            div(v-if="pTags.length > 0")
+                div(v-for="(item, index) in pTags", :key="index", style=tagStyle)
+                    span {{ item.tName }}
+                    span(style=tagSpan2Style) {{ item.tNumber }}
 
         // statistics
         div(style="display: flex; align-items: center")
@@ -76,19 +79,24 @@
         // comments
         div(style="margin-bottom: 100px")
             div(style="margin: 16px 0")
-                h3(style="display: inline-block") 评论（999+）
+                h3(style="display: inline-block") 评论（{{ commentAmount > 999 ? "999+" : commentAmount }}）
                 icon-button(icon-color="black", icon-name="edit", :height="32", :width="32", :margin="4", hover-icon-color="gray",
                     @click="showDlg = true")
 
-            pager(@navigate="onNavigate", style="margin-bottom: 8px;")
+            pager(:value="currentPage", style="margin-bottom: 8px;",
+                :total="Math.ceil(commentAmount / 10.0)",
+                @navigate="onNavigate")
 
             div(style="width: 100%; display: flex; align-items: center; justify-content: center; height: 200px;",
                 v-if="loadingComment")
                 h3(style="margin-right: 24px;") 加载中...
                 loading-box
             div(v-if="!loadingComment")
-                comment-item(v-for="(item, index) in ratingsInfo", :key="index", :data="item",
-                    style="padding: 16px 0; border-bottom: 1px solid #00000011")
+                div(v-if="ratingsInfo.length === 0")
+                    p(style="padding: 8px 0;") 快来抢沙发:)
+                div(v-if="ratingsInfo.length > 0")
+                    comment-item(v-for="(item, index) in ratingsInfo", :key="index", :data="item",
+                        style="padding: 16px 0; border-bottom: 1px solid #00000011")
 </template>
 
 <script>
@@ -134,13 +142,17 @@
 
                 loadingComment: true,
                 rawRatingInfo: [],
+
+                commentAmount: 999,
+
+                currentPage: 1
             }
         },
         created: function () {
             let teacherId = this.$route.params.pid;
 
             // load professor info
-            this.axios.get(`http://${this.global.domain}/professors/${teacherId}`).then((response) => {
+            this.axios.get(`http://${this.global.domain}/${this.global.prefix}professors/${teacherId}`).then((response) => {
                 window.console.log("professor info", response.data);
 
                 let data = response.data.data;
@@ -157,7 +169,7 @@
             });
 
             // load course info
-            this.axios.get(`http://${this.global.domain}/courses?pId=${teacherId}`).then((response) => {
+            this.axios.get(`http://${this.global.domain}/${this.global.prefix}courses?pId=${teacherId}`).then((response) => {
                 window.console.log("course info", response.data);
 
                 this.courseInfo = response.data.data.courseInfo;
@@ -166,7 +178,7 @@
             });
 
             // load tags
-            this.axios.get(`http://${this.global.domain}/tags`).then((response) => {
+            this.axios.get(`http://${this.global.domain}/${this.global.prefix}tags`).then((response) => {
                 window.console.log("tags", response.data);
                 if (response.data.code === 0) {
                     this.tags = response.data.data.tTags;
@@ -174,11 +186,16 @@
             });
 
             // load professor tags
-            this.axios.get(`http://${this.global.domain}/tags?pId=${teacherId}`).then((response) => {
+            this.axios.get(`http://${this.global.domain}/${this.global.prefix}tags?pId=${teacherId}`).then((response) => {
                 window.console.log("pTags", response.data);
                 if (response.data.code === 0) {
                     this.pTags = response.data.data.tTags;
                 }
+            })
+
+            // get comment amount
+            this.getCommentNumber().then((num) => {
+                this.commentAmount = num;
             })
 
             // load page 1 comments
@@ -187,10 +204,25 @@
             })
         },
         methods: {
+            getCommentNumber: async function () {
+                let pid = this.$route.params.pid;
+                let domain = this.global.domain;
+                let prefix = this.global.prefix;
+                let ans = 999;
+                await this.axios.get(`http://${domain}/${prefix}ratings?pId=${pid}&offset=0&limit=10`)
+                    .then((response) => {
+                        if (response.data.code === 0) {
+                            this.rawRatingInfo = response.data.data.ratings;
+                            ans = response.data.data.total;
+                        }
+                    });
+
+                return ans;
+            },
             loadRatingInfo: async function (page) {
                 let pid = this.$route.params.pid;
                 let domain = this.global.domain;
-                await this.axios.get(`http://${domain}/ratings?pId=${pid}&offset=${page*10}&limit=10`)
+                await this.axios.get(`http://${domain}/${this.global.prefix}ratings?pId=${pid}&offset=${page*10}&limit=10`)
                     .then((response) => {
                         if (response.data.code === 0) {
                             this.rawRatingInfo = response.data.data.ratings;
@@ -198,7 +230,8 @@
                     });
             },
             onNavigate: function (to) {
-                window.console.log(to);
+                // window.console.log(to);
+                this.currentPage = to;
 
                 this.loadingComment = true;
                 this.loadRatingInfo(to - 1).then(() => {
@@ -226,7 +259,7 @@
 
                 window.console.log(postData);
 
-                this.axios.post(`http://${this.global.domain}/ratings`, postData);
+                this.axios.post(`http://${this.global.domain}/${this.global.prefix}ratings`, postData);
             }
         },
         computed: {

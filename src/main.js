@@ -15,7 +15,7 @@ import "@/styles/font.css"
 import MainPage from "@/components/main-page/MainPage";
 import HomePage from "@/components/main-page/HomePage";
 import FrontPage from "@/components/front-page/FrontPage";
-import FindTeacherPage from "@/components/main-page/FindTeacherPage";
+import SearchPage from "@/components/main-page/SearchPage";
 import ApplyTeacher from "@/components/main-page/ApplyTeacher";
 import TeacherInfo from "@/components/main-page/accessory/TeacherInfo";
 
@@ -45,7 +45,7 @@ const routes = [
             },
             {
                 path: "find-teacher",
-                component: FindTeacherPage
+                component: SearchPage
             },
             {
                 path: "apply-teacher",

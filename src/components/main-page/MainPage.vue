@@ -104,11 +104,11 @@
                         name: "home",
                         icon: "home"
                     },
-                    {
-                        caption: "测试",
-                        name: "test",
-                        icon: "graduation-cap"
-                    },
+                    // {
+                    //     caption: "测试",
+                    //     name: "test",
+                    //     icon: "graduation-cap"
+                    // },
                     {
                         caption: "搜索",
                         name: "search",

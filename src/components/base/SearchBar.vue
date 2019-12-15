@@ -56,7 +56,7 @@
                     padding: "0 " + (this.innerHeight).toString() + "px",
                     border: "2px solid " + this.color,
                     // width: this.width === -1 ? "100%" : (this.width - 2 * this.innerHeight - 4).toString() + "px",
-                    width: "100%",
+                    width: this.width  <= 0 ? "100%" : `${this.width}px`,
                     letterSpacing: "2px",
                     boxSizing: "border-box",
                     borderRadius: "100px"

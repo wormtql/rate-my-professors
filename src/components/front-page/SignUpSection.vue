@@ -130,14 +130,14 @@
                 // window.console.log(data);
                 // window.console.log(`${this.global.domain}`);
 
-                this.axios.post(`http://${this.global.domain}/users`, data).then((response) => {
+                this.axios.post(`http://${this.global.domain}/${this.global.prefix}users`, data).then((response) => {
                     if (response.data.code === 0) {
                         // todo login
                         data = {
                             uEmail: data.uEmail,
                             uPassword: data.uPassword
                         };
-                        this.axios.post(`http://${this.global.domain}/sessions`, data).then((res) => {
+                        this.axios.post(`http://${this.global.domain}/${this.global.prefix}sessions`, data).then((res) => {
                             if (res.data.code === 0) {
                                 this.$router.push("/rate");
                             } else {
