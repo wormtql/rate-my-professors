@@ -21,6 +21,7 @@
               description="修改，维护个人信息"
               color="#ffaa0011"
               img="note.svg"
+              @click="$router.push('/rate/center')"
         ></Card>
         <Card header="找教师"
               description="寻找教师，并为他打CALL"

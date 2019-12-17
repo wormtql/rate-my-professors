@@ -17,10 +17,10 @@ export default {
             return {
                 background: this.background,
                 display: "flex",
+                position: "fixed",
                 zIndex: "10000",
                 alignItems: "center",
                 justifyContent: "center",
-                position: "absolute",
                 left: "0",
                 top: "0",
                 width: "100vw",

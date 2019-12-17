@@ -40,7 +40,7 @@ export default {
         onClick: function () {
             // let temp = this.data.link.split("/")[2];
             if (this.data.pId !== "") {
-                this.$router.push(`/rate/teacher-info-test/${this.data.pId}`);
+                this.$router.push(`/rate/teacher-info/${this.data.pId}`);
             }
             
         }

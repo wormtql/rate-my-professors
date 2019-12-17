@@ -70,8 +70,8 @@
                 a(style="float: right; text-decoration: none; color: black", :href="info.website") {{ info.website }}
 
         // comment section
-        comment-box(v-if="showDlg", @cancel="showDlg = false", @comment="onComment",
-            :info="commentInfo")
+        //- comment-box(v-if="showDlg", @cancel="showDlg = false", @comment="onComment",
+        //-     :info="commentInfo")
 
         //- info-dialog
         
@@ -81,7 +81,7 @@
             div(style="margin: 16px 0")
                 h3(style="display: inline-block") 评论（{{ commentAmount > 999 ? "999+" : commentAmount }}）
                 icon-button(icon-color="black", icon-name="edit", :height="32", :width="32", :margin="4", hover-icon-color="gray",
-                    @click="showDlg = true")
+                    @click="onRate")
 
             pager(:value="currentPage", style="margin-bottom: 8px;",
                 :total="Math.ceil(commentAmount / 10.0)",
@@ -90,13 +90,15 @@
             div(style="width: 100%; display: flex; align-items: center; justify-content: center; height: 200px;",
                 v-if="loadingComment")
                 h3(style="margin-right: 24px;") 加载中...
-                loading-box
+                loading-box(color="#123456")
             div(v-if="!loadingComment")
                 div(v-if="ratingsInfo.length === 0")
                     p(style="padding: 8px 0;") 快来抢沙发:)
                 div(v-if="ratingsInfo.length > 0")
                     comment-item(v-for="(item, index) in ratingsInfo", :key="index", :data="item",
-                        style="padding: 16px 0; border-bottom: 1px solid #00000011")
+                        style="padding: 16px 0; border-bottom: 1px solid #00000011",
+                        @thumbsup="onThumbsUp(index)",
+                        @thumbsdown="onThumbsDown(index)")
 </template>
 
 <script>
@@ -204,6 +206,35 @@
             })
         },
         methods: {
+            onThumbsUp: function (index) {
+                let rid = this.rawRatingInfo[index].rId;
+                let domain = this.global.domain;
+                let prefix = this.global.prefix;
+
+                this.axios.patch(`http://${domain}/${prefix}ratings/${rid}`, {
+                    action: "likeRating"
+                }).then((response) => {
+                    if (response.data.code === 0) {
+                        this.rawRatingInfo[index].rPeopleFoundUseful += 1;
+                    }
+                })
+            },
+            onThumbsDown: function (index) {
+                let rid = this.rawRatingInfo[index].rId;
+                let domain = this.global.domain;
+                let prefix = this.global.prefix;
+
+                this.axios.patch(`http://${domain}/${prefix}ratings/${rid}`, {
+                    action: "dislikeRating"
+                }).then((response) => {
+                    if (response.data.code === 0) {
+                        this.rawRatingInfo[index].rPeopleFoundUseful += 1;
+                    }
+                })
+            },
+            onRate: function () {
+                this.$router.push(`/rate/comment/${this.$route.params.pid}`);
+            },
             getCommentNumber: async function () {
                 let pid = this.$route.params.pid;
                 let domain = this.global.domain;
@@ -238,29 +269,29 @@
                     this.loadingComment = false;
                 })
             },
-            onComment: function (data) {
-                this.showDlg = false;
-                // window.console.log(data);
-                let vm = this;
+            // onComment: function (data) {
+            //     this.showDlg = false;
+            //     // window.console.log(data);
+            //     let vm = this;
 
-                let postData = {
-                    rCourse: this.courseInfo[data.course].cId,
-                    rProfessor: this.$route.params.pid,
-                    rQuality: data.quality,
-                    rDifficulty: data.difficulty,
-                    rTakeAgain: data.takeAgain,
-                    rAttendance: data.attendance,
-                    rGradeReceived: data.score,
-                    rTags: data.tags.map(function (value) {
-                        return vm.tags[value].tId;
-                    }),
-                    rComment: data.comment,
-                };
+            //     let postData = {
+            //         rCourse: this.courseInfo[data.course].cId,
+            //         rProfessor: this.$route.params.pid,
+            //         rQuality: data.quality,
+            //         rDifficulty: data.difficulty,
+            //         rTakeAgain: data.takeAgain,
+            //         rAttendance: data.attendance,
+            //         rGradeReceived: data.score,
+            //         rTags: data.tags.map(function (value) {
+            //             return vm.tags[value].tId;
+            //         }),
+            //         rComment: data.comment,
+            //     };
 
-                window.console.log(postData);
+            //     window.console.log(postData);
 
-                this.axios.post(`http://${this.global.domain}/${this.global.prefix}ratings`, postData);
-            }
+            //     this.axios.post(`http://${this.global.domain}/${this.global.prefix}ratings`, postData);
+            // }
         },
         computed: {
             ratingsInfo: function () {
@@ -269,7 +300,7 @@
                         course: value.rClass,
                         quality: value.rQuality,
                         difficulty: value.rDifficulty,
-                        takeAgain: null,
+                        takeAgain: value.rTakeAgain,
                         attendance: value.rAttendance,
                         grade: value.rGradeReceived,
                         tags: value.rTags,

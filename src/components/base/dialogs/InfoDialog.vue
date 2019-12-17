@@ -1,8 +1,9 @@
 <template lang="pug">
     Dialog
-        div
-            div
-                v-icon(:name="icon")
+        div(style="background: white; border-radius: 8px; padding: 16px; display: flex; align-item: center;")
+            div(style="display: inline-flex; justify-content: center; align-items: center;")
+                v-icon(:name="icon" :style="{color: iconColor}")
+            p(style="display: inline-block; padding: 0 0 0 16px;") {{ text }}
 </template>
 
 <script>
@@ -20,7 +21,11 @@ export default {
         },
         text: {
             type: String,
-            default: "1suqwwiuwq8127e893ue8392ur89u"
+            default: "information"
+        },
+        iconColor: {
+            type: String,
+            default: "black"
         }
     }
     

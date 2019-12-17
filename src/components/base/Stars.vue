@@ -24,7 +24,7 @@
                 type: Boolean,
                 default: false
             },
-            input: {
+            value: {
                 type: Number,
                 default: 1
             },
@@ -69,21 +69,22 @@
                 // window.console.log(this.score);
             },
             onMouseLeave: function () {
-                this.score = this.actualScore;
+                // this.score = this.actualScore;
+                this.score = this.value;
             },
             onClick: function (e) {
                 let x = e.offsetX;
                 let temp = Math.floor(2 * x / this.iconSize) + 1;
-                if (temp != this.actualScore) {
-                    this.actualScore = temp;
-                    this.$emit("input", this.actualScore);
+                if (temp != this.value) {
+                    // this.actualScore = temp;
+                    this.$emit("input", temp);
                 }
             }
         },
         data: function () {
             return {
                 score: 1,
-                actualScore: 5
+                // actualScore: 5
             }
         }
     }

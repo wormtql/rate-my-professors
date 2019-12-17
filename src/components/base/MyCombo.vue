@@ -3,7 +3,8 @@
         input(:style="inputStyle", v-model="content", readonly="true")
         div(:style="iconStyle", @click="onClick")
             v-icon(name="chevron-down")
-        popup-menu2(:style="menuStyle", v-show="expanded", @click="onSelect", :items="options")
+        div(v-if="expanded", @mouseleave="onMenuLeave")
+            popup-menu2(:style="menuStyle", @click="onSelect", :items="options")
 </template>
 
 <script>
@@ -51,6 +52,12 @@
                 this.content = this.options[index];
                 this.expanded = false;
                 this.$emit("input", index);
+            },
+            onMenuLeave() {
+                window.console.log("aaa");
+                setTimeout(() => {
+                    this.expanded = false;
+                }, 1000);
             }
         },
         computed: {

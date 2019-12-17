@@ -43,21 +43,21 @@
             span(v-if = "data.grade > 0", style=style2) 获得了 {{ data.grade }} 分
             span(style=style2 + "float: right") {{ data.positive }}
             icon-button(:margin="0", icon-name="thumbs-up", icon-color="gray", :height="20", :width="20", :fontsize="0.8"
-                style="float: right", @click="$emit('up')")
+                style="float: right", @click="onThumbsUp")
             span(style=style2 + "float: right; margin-right: 8px") {{ data.negative }}
             icon-button(:margin="0", icon-name="thumbs-down", icon-color="gray", :height="20", :width="20", :fontsize="0.8"
-                style="float: right", @click="$emit('down')")
+                style="float: right", @click="onThumbsUp")
         // comment
         div(style="padding: 8px 0") {{ data.comment }}
 
+        // tags
+        div(style="border-left: 3px solid black; display: flex; align-items: center; padding-left: 4px; flex-wrap: wrap")
+            span(v-for="(item, index) in data.tags", style=tagStyle) {{ item }}
+
         div(style="height: 20px")
             span(style="float: right; color: gray; height: 20px; font-size: 0.8em; margin-left: 16px; cursor: pointer",
-                @click="$emit('report')") 举报
+                @click="onReport") 举报
             span(style="float: right; color: gray; height: 20px; font-size: 0.8em") {{ data.date }}
-
-        // tags
-        div(style="border-left: 3px solid black; display: flex; align-items: center; padding-left: 4px;")
-            span(v-for="(item, index) in data.tags", style=tagStyle) {{ item }}
 
 </template>
 
@@ -91,6 +91,17 @@
                 red: "rgba(255,47,40,0.5)",
                 yellow: "rgba(252,255,84,0.5)",
                 green: "rgba(28,255,148,0.5)"
+            }
+        },
+        methods: {
+            onThumbsUp: function () {
+                this.$emit("thumbsup");
+            },
+            onThumbsDown: function () {
+                this.$emit("thumbsdown");
+            },
+            onReport: function () {
+                this.$emit("report");
             }
         },
         computed: {

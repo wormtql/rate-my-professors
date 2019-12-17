@@ -18,6 +18,8 @@ import FrontPage from "@/components/front-page/FrontPage";
 import SearchPage from "@/components/main-page/SearchPage";
 import ApplyTeacher from "@/components/main-page/ApplyTeacher";
 import TeacherInfo from "@/components/main-page/accessory/TeacherInfo";
+import CommentPage from "@/components/main-page/CommentPage";
+import UserCenter from "@/components/main-page/UserCenter";
 
 Vue.use(VueRouter);
 Vue.use(VueCookies);
@@ -30,15 +32,15 @@ Vue.config.productionTip = false;
 
 
 const routes = [
-    {path: "/home", component: FrontPage},
+    {path: "/", component: FrontPage},
     {
         path: "/rate",
         component: MainPage,
         children: [
-            {
-                path: "home",
-                component: HomePage
-            },
+            // {
+            //     path: "home",
+            //     component: HomePage
+            // },
             {
                 path: "",
                 component: HomePage
@@ -52,8 +54,16 @@ const routes = [
                 component: ApplyTeacher
             },
             {
-                path: "teacher-info-test/:pid",
+                path: "teacher-info/:pid",
                 component: TeacherInfo
+            },
+            {
+                path: "comment/:pid",
+                component: CommentPage
+            },
+            {
+                path: "center",
+                component: UserCenter,
             }
         ]
     }

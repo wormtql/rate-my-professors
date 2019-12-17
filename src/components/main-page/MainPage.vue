@@ -101,7 +101,7 @@
                 menu: [
                     {
                         caption: "主页",
-                        name: "home",
+                        name: "center",
                         icon: "home"
                     },
                     // {
@@ -137,10 +137,10 @@
         },
         methods: {
             onMenuClicked: function (name, index) {
-                if (name === "home") {
-                    this.$router.replace("/rate/home");
-                } else if (name === "test") {
-                    this.$router.replace("/rate/teacher-info-test/qdUKKBcasm");
+                if (name === "center") {
+                    this.$router.push("/rate");
+                // } else if (name === "test") {
+                //     this.$router.replace("/rate/teacher-info/qdUKKBcasm");
                 } else if (name === "search") {
                     this.$router.replace("/rate/find-teacher");
                 }
@@ -148,6 +148,10 @@
             },
             onUserMenuClicked: function (name, index) {
                 window.console.log(name, index)
+
+                if (name === "center") {
+                    this.$router.push("/rate/center");
+                }
             }
         },
         created: function () {
