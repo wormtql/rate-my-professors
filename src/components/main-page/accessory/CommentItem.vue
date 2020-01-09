@@ -46,7 +46,7 @@
                 style="float: right", @click="onThumbsUp")
             span(style=style2 + "float: right; margin-right: 8px") {{ data.negative }}
             icon-button(:margin="0", icon-name="thumbs-down", icon-color="gray", :height="20", :width="20", :fontsize="0.8"
-                style="float: right", @click="onThumbsUp")
+                style="float: right", @click="onThumbsDown")
         // comment
         div(style="padding: 8px 0") {{ data.comment }}
 
