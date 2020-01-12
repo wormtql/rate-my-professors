@@ -6,7 +6,7 @@
                 display: inline-block;
             "
             
-            >早上好, {{ username }}</h1>
+            >{{ greeting }}, {{ username }}</h1>
             <!-- <img src="../../assets/logo.png" width="128px" height="128px"
                 style="border-radius: 50%; box-shadow: 0 0 40px 1px #00000055; display:inline-block"
              /> -->
@@ -48,6 +48,19 @@
                 return {
                     fontSize: "2em",
                     borderBottom: "4px solid lightblue"
+                }
+            },
+            greeting: function () {
+                let time = new Date();
+                let hour = time.getHours();
+                if (hour < 10) {
+                    return "早上好";
+                } else if (hour < 12) {
+                    return "上午好";
+                } else if (hour < 18) {
+                    return "下午好";
+                } else {
+                    return "晚上好";
                 }
             }
         },

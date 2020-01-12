@@ -14,9 +14,11 @@
             spacer
 
             div
-                button2(color="#123456", hover-color="#456789", :height="48", :width="200")
+                button2(color="#123456", hover-color="#456789", :height="48", :width="200",
+                    @click="onWormClicked")
                     span(style="padding: 0 8px") 修改密码
                     v-icon(name="lock")
+                p(v-show="showMessage") 该项功能还没完成哦
 </template>
 
 <script>
@@ -56,6 +58,16 @@ export default {
             firstName: "",
             lastName: "",
             email: "",
+
+            showMessage: false
+        }
+    },
+    methods: {
+        onWormClicked: function () {
+            this.showMessage = true;
+            setTimeout(() => {
+                this.showMessage = false;
+            }, 5000);
         }
     }
 }

@@ -228,7 +228,7 @@
                     action: "dislikeRating"
                 }).then((response) => {
                     if (response.data.code === 0) {
-                        this.rawRatingInfo[index].rPeopleFoundUseful += 1;
+                        this.rawRatingInfo[index].rPeopleDidNotFoundUseful += 1;
                     }
                 })
             },

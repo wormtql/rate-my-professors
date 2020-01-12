@@ -151,6 +151,9 @@
 
                 if (name === "center") {
                     this.$router.push("/rate/center");
+                    this.userPopupMenuShow = false;
+                } else if (name === "exit") {
+                    this.$router.replace("/");
                 }
             }
         },

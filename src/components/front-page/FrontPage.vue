@@ -10,6 +10,7 @@
                         :width="96"
                         :fontsize="1.8"
                         icon-name="sign-in-alt"
+                        hover-icon-color="white"
                         @click="onLoginClicked"
             ></IconButton>
             <HorizontalMenu height="96px"
@@ -31,7 +32,7 @@
             </p>
             <Button2 style="padding: 8px 16px; border-radius: 5px; margin-top: 100px; box-shadow: 0 10px 20px 1px black"
                      color="#283539"
-                     hover-color="#485559"
+                     hover-icon-color="white"
                      :height="64"
                      :width="200"
                      @click="onLoginClicked"
@@ -52,15 +53,15 @@
         components: {EnterSection, Button2, IconButton, HorizontalMenu},
         methods: {
             onLoginClicked: function () {
-                window.console.log("aaa");
+                // window.console.log("aaa");
 
                 this.showEnterDlg = true;
             },
             onTopBarClicked: function (index, caption) {
-                window.console.log(index, caption);
+                // window.console.log(index, caption);
 
                 if (caption === "GITHUB") {
-                    window.open("https://github.com/IATOW/rateMyProfessors", "_blank");
+                    window.open("https://github.com/IATOW/rate-my-professors", "_blank");
                 }
             }
         },

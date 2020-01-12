@@ -14,9 +14,10 @@
 
     div(:style="rootStyle")
         div(:style="controlStyle")
-            icon-button(icon-name="sign-in-alt", :width="44", :height="44", :margin="6", @click="component = 'LoginSection'")
+            icon-button(icon-name="sign-in-alt", :width="44", :height="44", :margin="6",
+                @click="component = 'LoginSection'", hover-icon-color="white")
             icon-button(icon-name="user-plus", :width="44", :height="44", :margin="6", @click="component = 'SignUpSection'",
-                style="vertical-align: top")
+                style="vertical-align: top", hover-icon-color="white")
             icon-button(icon-name="times", :width="44", :height="44", :margin="6", @click="$emit('close')",
                 style="float: right", hover-color="#a16767ee", icon-color="white", hover-icon-color="white")
         div(:style="bodyStyle")
